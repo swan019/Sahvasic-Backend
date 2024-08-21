@@ -142,7 +142,7 @@ exports.sendOTP = async (req, res) => {
 
     // send OTP
     try {
-        await sendOtp(email, otp);
+        // await sendOtp(email, otp);
         return res.json({
             hash: `${hash}.${expires}`,
             email,
@@ -173,6 +173,8 @@ exports.verifyOtp = async (req, res) => {
     if (!isValid) {
         return res.status(400).json({ message: 'Invalid OTP' });
     }
+
+    await User.findOneAndUpdate({ email }, { isActivated: true });
 
     res.status(200).json({ msg: "User Authenticated succefully" });
 }

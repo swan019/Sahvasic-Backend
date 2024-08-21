@@ -12,12 +12,13 @@ const userSchema = new mongoose.Schema({
         unique: true
     },
     password: String,
+    avatar: String,
     role: {
         type: String,
         enum: ['roommate_seeker', 'room_seeker', 'pg_owner', 'admin'],
         default: 'roommate_seeker'
     },
-    activated: {
+    isActivated: {
         type: Boolean,
         default: false
     },

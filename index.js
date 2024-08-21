@@ -3,9 +3,13 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 //Load Routes 
 const authRoutes = require('./routes/authRoutes');
+const userRouters = require('./routes/userRoutes');
+const roomsRouters = require('./routes/roomRoutes');
+const adminRouters = require('./routes/adminRoutes');
 
 //Load Env Variables
 dotenv.config();
@@ -15,6 +19,9 @@ const app = express();
 //Middlewares
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.json({limit: "100kb"}));
+app.use(express.urlencoded({extended:true, limit: "16kb"}));
 
 //Database connection
 mongoose.connect(process.env.MONGO_URI, {
@@ -26,6 +33,9 @@ mongoose.connect(process.env.MONGO_URI, {
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRouters);
+app.use('/api/rooms', roomsRouters);
+app.use('/api/admin', adminRouters);
 
 //Error handling middleware
 app.use((err, req, res, next) => {
